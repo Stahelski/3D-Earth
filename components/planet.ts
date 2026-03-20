@@ -44,21 +44,29 @@ const initPlanet3D = (
   const dayTexture = TL.load("/earth/April.jpg");
   const nightTexture = TL.load("/earth/EarthNight.jpg");
   const specularCloudsTexture = TL.load("/earth/specularClouds.jpg");
-  // const normalMap = TL.load("/earth/NormalMap.png") //! Prøv å fiks etterpå, når siden er ferdig.
+  const normalMap = TL.load("/earth/NormalMap.jpg"); //! NormalMap
+  const speculareMap = TL.load("/earth/SpeculareMap.jpg"); //! SpeculareMap
 
+  // Wrap
+  speculareMap.wrapS = THREE.RepeatWrapping; //! ??
+  speculareMap.wrapS = THREE.RepeatWrapping; //! ??
+
+  // Color
   dayTexture.colorSpace = THREE.SRGBColorSpace;
   nightTexture.colorSpace = THREE.SRGBColorSpace;
+  //! normalMap SRGB???
+  //! speculareMap SRGB??
+  const atmosphereDayColor = "#31c1e9";
 
   const baseAnisotropy = renderer.capabilities.getMaxAnisotropy();
   // anisotropy, passer på at bildet man laster ikke er uklart
   dayTexture.anisotropy = baseAnisotropy;
   nightTexture.anisotropy = baseAnisotropy;
+  normalMap.anisotropy = baseAnisotropy;
 
   // geometry
   const earthGeometry = new THREE.SphereGeometry(2, 64, 64); // Radius, Width, Height
   // const atmosphereGeometyr = new THREE.SphereGeometry(2, 64, 64);
-
-  const atmosphereDayColor = "#31c1e9";
 
   // material
   const earthMaterial = new THREE.ShaderMaterial({
@@ -68,6 +76,8 @@ const initPlanet3D = (
       uDayTexture: new THREE.Uniform(dayTexture),
       uNightTexture: new THREE.Uniform(nightTexture),
       uSpecularCloudsTexture: new THREE.Uniform(specularCloudsTexture),
+      uNormalMap: new THREE.Uniform(normalMap), //! normalmap
+      uSpeculareMap: new THREE.Uniform(speculareMap), //! speculare Map
       uSunColor: new THREE.Uniform(new THREE.Color("#32b7dc")),
       uSunDirection: new THREE.Uniform(new THREE.Vector3(-1, 0, 0)),
       uAtmosphereDayColor: new THREE.Uniform(
@@ -105,7 +115,7 @@ const initPlanet3D = (
 
 export default initPlanet3D;
 // https://www.youtube.com/watch?v=RdyZnB6ElLs
-// 22.00
+// 34.24
 
 // https://science.nasa.gov/earth/earth-observatory/
 
