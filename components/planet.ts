@@ -3,7 +3,6 @@ import { gsap } from "gsap";
 
 import earthVertex from "./shaders/earth/vertex.glsl";
 import earthFragment from "./shaders/earth/fragment.glsl";
-import { specularColor } from "three/tsl";
 
 const initPlanet3D = (
   canvasElement: HTMLCanvasElement,
@@ -44,7 +43,8 @@ const initPlanet3D = (
   const TL = new THREE.TextureLoader(); // her kan du legge inn argumenter senere for å legge til Loading screen
   const dayTexture = TL.load("/earth/April.jpg");
   const nightTexture = TL.load("/earth/EarthNight.jpg");
-  const specularCloudsTexture = TL.load("") //! Husk å legg inn skyer her
+  const specularCloudsTexture = TL.load("/earth/specularClouds.jpg");
+  // const normalMap = TL.load("/earth/NormalMap.png") //! Prøv å fiks etterpå, når siden er ferdig.
 
   dayTexture.colorSpace = THREE.SRGBColorSpace;
   nightTexture.colorSpace = THREE.SRGBColorSpace;
@@ -56,6 +56,9 @@ const initPlanet3D = (
 
   // geometry
   const earthGeometry = new THREE.SphereGeometry(2, 64, 64); // Radius, Width, Height
+  // const atmosphereGeometyr = new THREE.SphereGeometry(2, 64, 64);
+
+  const atmosphereDayColor = "#31c1e9";
 
   // material
   const earthMaterial = new THREE.ShaderMaterial({
@@ -65,11 +68,12 @@ const initPlanet3D = (
       uDayTexture: new THREE.Uniform(dayTexture),
       uNightTexture: new THREE.Uniform(nightTexture),
       uSpecularCloudsTexture: new THREE.Uniform(specularCloudsTexture),
+      uSunColor: new THREE.Uniform(new THREE.Color("#32b7dc")),
       uSunDirection: new THREE.Uniform(new THREE.Vector3(-1, 0, 0)),
       uAtmosphereDayColor: new THREE.Uniform(
-        new THREE.Color(atmosphereTwilightColor), 
-      )
-    }
+        new THREE.Color(atmosphereDayColor),
+      ),
+    },
     transparent: true,
   });
 
@@ -94,11 +98,15 @@ const initPlanet3D = (
 
     renderer.setSize(size.width, size.height);
     renderer.setPixelRatio(size.pixelRatio);
-  })
+  });
 
   return { scene, renderer };
 };
 
 export default initPlanet3D;
 // https://www.youtube.com/watch?v=RdyZnB6ElLs
-// 16:44
+// 22.00
+
+// https://science.nasa.gov/earth/earth-observatory/
+
+// https://github.com/Robinzon100/3D_hero/blob/main/public/earth/specularClouds.jpg

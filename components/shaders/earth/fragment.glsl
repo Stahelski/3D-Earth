@@ -5,6 +5,7 @@ uniform sampler2D uSpecularCloudsTexture;// Et kart over skyer og hvor havet ref
 uniform vec3 uSunDirection;              // Retningen sola skinner fra
 uniform vec3 uAtmosphereDayColor;        // Fargen på atmosfæren om dagen (blåaktig)
 uniform vec3 uAtmosphereTwilightColor;   // Fargen på atmosfæren i soloppgang/nedgang (oransje)
+uniform vec3 uSunColor; // Farge på solens gjennskinn
 
 // "Varyings" er informasjon om 3D-modellens form og posisjon
 varying vec2 vUv;       // Koordinater som sier hvor på bildet vi er
@@ -22,6 +23,7 @@ void main() {
   vec3 nightColor = texture(uNightTexture, vUv).rgb;
   vec2 specularCloudsColor = texture(uSpecularCloudsTexture, vUv).rg;
 
+
   // 3. Regn ut om dette punktet peker mot sola (dag) eller bort fra sola (natt)
   float sunOrigntation = dot(uSunDirection, normal);
 
@@ -35,11 +37,11 @@ void main() {
   color = mix(color, vec3(1.0), cloudMix); // mix inn hvitfarge for skyene
 
   // 6. Fresnel-effekt: Gjør kantene på planeten lysere for å simulere atmosfære-dybde
-  float fresnel = dot(viewDirection, normal) + 1.1;
+  float fresnel = dot(viewDirection, normal) + 0.5;
   fresnel = pow(fresnel, 2.0);
 
   // 7. Bland atmosfærefargene (blå/oransje) og legg dem på toppen av planeten
-  float atmosphereDayMix = smoothstep(-0.5, 1.0, sunOrigntation);
+  float atmosphereDayMix = smoothstep(-0.4, 1.0, sunOrigntation);
   vec3 atmosphereColors = mix(uAtmosphereDayColor, uAtmosphereTwilightColor, atmosphereDayMix);
   color = mix(color, atmosphereColors, fresnel * atmosphereDayMix);
 
@@ -47,11 +49,11 @@ void main() {
   vec3 reflection = reflect(-uSunDirection, normal);
   float specular = -dot(reflection, viewDirection);
   specular = max(specular, 0.0);
-  specular = pow(specular, 10.0); // Gjør gjenskinnet mindre og skarpere
-  specular *= specularCloudsColor.r * .7; // Bruk kartet for å kun ha gjenskinn i vann, ikke på land
+  specular = pow(specular, 1.6); // Gjør gjenskinnet mindre og skarpere
+  specular *= specularCloudsColor.r * .6; // Bruk kartet for å kun ha gjenskinn i vann, ikke på land
 
   // 9. Legg til det hvite sol-gjenskinnet til slutt
-  vec3 specularColor = mix(vec3(1.0), atmosphereColors, fresnel);
+  vec3 specularColor = uSunColor;;
   color += specular * specularColor;
 
   // 10. Send den ferdige fargen til skjermen og juster lysstyrken (tonemapping)
