@@ -3,6 +3,8 @@ import { gsap } from "gsap";
 
 import earthVertex from "./shaders/earth/vertex.glsl";
 import earthFragment from "./shaders/earth/fragment.glsl";
+import atmosphereVertex from "./shaders/atmosphere/vertex.glsl";
+import atmosphereFragment from "./shaders/atmosphere/fragment.glsl";
 
 const initPlanet3D = (
   canvasElement: HTMLCanvasElement,
@@ -57,6 +59,7 @@ const initPlanet3D = (
   //! normalMap SRGB???
   //! speculareMap SRGB??
   const atmosphereDayColor = "#31c1e9";
+  const atmosphereTwilightColor = "#2bafd4";
 
   const baseAnisotropy = renderer.capabilities.getMaxAnisotropy();
   // anisotropy, passer på at bildet man laster ikke er uklart
@@ -66,9 +69,9 @@ const initPlanet3D = (
 
   // geometry
   const earthGeometry = new THREE.SphereGeometry(2, 64, 64); // Radius, Width, Height
-  // const atmosphereGeometyr = new THREE.SphereGeometry(2, 64, 64);
+  const atmosphereGeometyr = new THREE.SphereGeometry(2, 64, 64);
 
-  // material
+  // material Earth
   const earthMaterial = new THREE.ShaderMaterial({
     vertexShader: earthVertex,
     fragmentShader: earthFragment,
@@ -83,12 +86,39 @@ const initPlanet3D = (
       uAtmosphereDayColor: new THREE.Uniform(
         new THREE.Color(atmosphereDayColor),
       ),
+      uAtmosphereTwilightColor: new THREE.Uniform(
+        new THREE.Color(atmosphereTwilightColor),
+      ),
     },
     transparent: true,
   });
 
+  // material Atmosphere
+  const atmosphereMaterial = new THREE.ShaderMaterial({
+    transparent: true,
+    side: THREE.BackSide,
+    vertexShader: atmosphereVertex,
+    fragmentShader: atmosphereFragment,
+    uniforms: {
+      uOpacity: { value: 1 },
+      uSunDirection: new THREE.Uniform(new THREE.Vector3(-1, 0, 0)),
+      uAtmosphereDayColor: new THREE.Uniform(
+        new THREE.Color(atmosphereDayColor),
+      ),
+      uAtmosphereTwilightColor: new THREE.Uniform(
+        new THREE.Color(atmosphereTwilightColor),
+      ),
+    },
+    depthWrite: false,
+  });
+
   const earth = new THREE.Mesh(earthGeometry, earthMaterial);
-  scene.add(earth);
+  const atmosphere = new THREE.Mesh(atmosphereGeometyr, atmosphereMaterial);
+  atmosphere.scale.set(1.13, 1.13, 1.13);
+
+  const earthGroup = new THREE.Group().add(earth, atmosphere);
+
+  scene.add(earthGroup);
 
   // animation loop
   gsap.ticker.add((time) => {

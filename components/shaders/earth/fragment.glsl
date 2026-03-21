@@ -23,15 +23,15 @@ void main() {
   vec3 color = vec3(0.0); // Start med helt svart farge
 
   // 2. Hent farger fra bildene (texturene) basert på koordinatene
-  vec3 dayColor = texture(uDayTexture, vUv).rgb * 2.0;
+  vec3 dayColor = texture(uDayTexture, vUv).rgb * 1.6;
   vec3 nightColor = texture(uNightTexture, vUv).rgb;
   vec2 specularCloudsColor = texture(uSpecularCloudsTexture, vUv).rg;
 
   // 3. Regn ut om dette punktet peker mot sola (dag) eller bort fra sola (natt)
-  float sunOrigntation = dot(uSunDirection, normal);
+  float sunOrientation = dot(uSunDirection, normal);
 
   // 4. Lag en myk overgang mellom natt-bildet og dag-bildet basert på solretningen
-  float dayMix = smoothstep(-0.25, 0.5, sunOrigntation);
+  float dayMix = smoothstep(-0.25, 0.5, sunOrientation);
   color += mix(nightColor, dayColor, dayMix);
 
   // 5. Legg til skyer. De skal bare være synlige der det er dagslys
@@ -48,7 +48,7 @@ void main() {
   fresnel = pow(fresnel, 2.0);
 
   // 7. Bland atmosfærefargene (blå/oransje) og legg dem på toppen av planeten
-  float atmosphereDayMix = smoothstep(-0.4, 1.0, sunOrigntation);
+  float atmosphereDayMix = smoothstep(-0.4, 1.0, sunOrientation);
   vec3 atmosphereColors = mix(uAtmosphereDayColor, uAtmosphereTwilightColor, atmosphereDayMix);
   color = mix(color, atmosphereColors, fresnel * atmosphereDayMix);
 
