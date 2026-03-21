@@ -6,6 +6,8 @@ import earthFragment from "./shaders/earth/fragment.glsl";
 import atmosphereVertex from "./shaders/atmosphere/vertex.glsl";
 import atmosphereFragment from "./shaders/atmosphere/fragment.glsl";
 
+import ScrollTrigger from "gsap/dist/ScrollTrigger";
+
 const initPlanet3D = (
   canvasElement: HTMLCanvasElement,
 ): { scene: THREE.Scene; renderer: THREE.WebGLRenderer } => {
@@ -26,8 +28,8 @@ const initPlanet3D = (
     10000,
   );
   camera.position.x = 0;
-  camera.position.y = 0.1;
-  camera.position.z = 19;
+  camera.position.y = 2.15;
+  camera.position.z = 4.5;
   scene.add(camera);
 
   // renderer
@@ -118,7 +120,51 @@ const initPlanet3D = (
 
   const earthGroup = new THREE.Group().add(earth, atmosphere);
 
+  const sunSpherical = new THREE.Spherical(1, Math.PI * 0.48, -1.8);
+  const sunDirection = new THREE.Vector3();
+
+  sunDirection.setFromSpherical(sunSpherical);
+
+  earthMaterial.uniforms.uSunDirection.value.copy(sunDirection);
+  atmosphereMaterial.uniforms.uSunDirection.value.copy(sunDirection);
+
   scene.add(earthGroup);
+  gsap.registerPlugin(ScrollTrigger);
+
+  gsap
+    .timeline({
+      scrollTrigger: {
+        trigger: ".hero_main",
+        start: () => "top top",
+        scrub: 3,
+        anticipatePin: 1,
+        pin: true,
+      },
+    })
+
+    .to(
+      ".hero_main .content",
+      {
+        filter: `blur(40px)`,
+        autoAlpha: 0,
+        scale: 0.5,
+        duration: 2,
+        ease: "power1.inOut",
+      },
+      "setting",
+    )
+
+    .to(
+      camera.position,
+      {
+        y: 0.1,
+        z: window.innerWidth > 768 ? 19 : 30,
+        x: window.innerHeight > 768 ? 0 : 0.1,
+        duration: 2,
+        ease: "power1.inOut",
+      },
+      "setting",
+    );
 
   // animation loop
   gsap.ticker.add((time) => {
@@ -145,7 +191,7 @@ const initPlanet3D = (
 
 export default initPlanet3D;
 // https://www.youtube.com/watch?v=RdyZnB6ElLs
-// 34.24
+// 41:15
 
 // https://science.nasa.gov/earth/earth-observatory/
 

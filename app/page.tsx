@@ -41,7 +41,7 @@ export default function Page() {
 
 //! https://threejs.org/docs/#MathUtils
 // https://www.youtube.com/watch?v=RdyZnB6ElLs
-// 34.24
+// 41:15
 
 // Shaders
 // https://www.youtube.com/watch?v=oci7hOzUwww
