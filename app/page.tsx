@@ -1,21 +1,26 @@
 "use client";
 import { useEffect, useRef } from "react";
 import initPlanet3D from "../components/planet";
+import BtnAnimation from "../components/gsap/buttonAnimation";
 
 export default function Page() {
   // Oppretter en referanse til canvas-elementet
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const btnRef = useRef(null);
 
   useEffect(() => {
-    if (!canvasRef.current) return;
+    if (!canvasRef.current || !btnRef.current) return;
 
     // Send canvasRef.current som argument til init-funksjonen din
     const { scene, renderer } = initPlanet3D(canvasRef.current);
+    const cleanupBtn = BtnAnimation(btnRef.current);
 
     return () => {
       const gl = renderer.getContext();
       gl.getExtension("WEBGL_lose_context")?.loseContext();
       renderer.dispose();
+
+      cleanupBtn?.();
     };
   }, []);
 
@@ -30,7 +35,9 @@ export default function Page() {
             workers productivity.
           </p>
 
-          <button className="cta_btn">Get started.</button>
+          <button ref={btnRef} className="cta_btn">
+            Get started.
+          </button>
         </div>
 
         <canvas className="planet-3D" ref={canvasRef} />
@@ -38,6 +45,8 @@ export default function Page() {
     </div>
   );
 }
+
+//! https://demos.gsap.com/demo/cursor-driven-perspective-tilt/
 
 //! https://threejs.org/docs/#MathUtils
 // https://www.youtube.com/watch?v=RdyZnB6ElLs
