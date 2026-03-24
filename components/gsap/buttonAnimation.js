@@ -1,9 +1,12 @@
 import { transcode } from "buffer";
 import gsap from "gsap";
+import MotionPathPlugin from "gsap/MotionPathPlugin";
 
 export default function BtnAnimasjon(btn, txt) {
   if (!btn || !txt) return;
 
+  let tl = gsap.timeline({ delay: 2.85, yoy: true });
+  gsap.registerPlugin(MotionPathPlugin);
   const handleClick = () => {
     gsap.killTweensOf([btn, txt]);
 
@@ -19,6 +22,21 @@ export default function BtnAnimasjon(btn, txt) {
     gsap.to(txt, {
       color: "transparent",
       duration: 0.5,
+    });
+
+    tl.to(btn, {
+      duration: 1,
+      ease: "elastic.out",
+      x: -40,
+      y: 5,
+    });
+
+    tl.to(btn, {
+      duration: 3,
+      ease: "",
+      motionPath: {
+       
+      },
     });
 
     // Back

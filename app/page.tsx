@@ -35,7 +35,14 @@ export default function Page() {
             AI agents that actually bring value to businesses and elevate
             workers productivity.
           </p>
-
+          <svg className="svg">
+            <path
+              id="sti"
+              d="M0,0 C0.385,0.147 0.532,0.246 0.682,0.392 0.783,0.49 0.907,0.69 1,1"
+              fill="none"
+              stroke="none"
+            />
+          </svg>
           <button ref={btnRef} className="cta_btn">
             <span ref={txtRef} className="btn_text">
               Order Now
