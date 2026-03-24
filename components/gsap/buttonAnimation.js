@@ -11,28 +11,31 @@ export default function BtnAnimasjon(btn, txt) {
     gsap.to(btn, {
       rotation: 720,
       width: "40px",
-      height: "40px",
+      height: "48px",
+      borderRadius: "100%",
       duration: 2,
       ease: "power2.inOut",
     });
     gsap.to(txt, {
       color: "transparent",
-      duration: 1,
+      duration: 0.5,
     });
 
     // Back
+    //! Fiks detaljer
     gsap.delayedCall(5, () => {
       gsap.to(btn, {
         rotation: 0,
         fontSize: "1.35rem",
         borderRadius: "11px",
-
+        width: "180px",
+        height: "40px",
         duration: 1.5,
         ease: "power2.inOut",
       });
       gsap.to(txt, {
         color: "white",
-        duration: 1,
+        duration: 1.5,
       });
     });
   };
