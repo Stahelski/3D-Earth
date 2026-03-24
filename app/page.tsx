@@ -7,20 +7,21 @@ export default function Page() {
   // Oppretter en referanse til canvas-elementet
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const btnRef = useRef(null);
+  const txtRef = useRef(null);
 
   useEffect(() => {
-    if (!canvasRef.current || !btnRef.current) return;
+    if (!canvasRef.current || !btnRef.current || !txtRef.current) return;
 
     // Send canvasRef.current som argument til init-funksjonen din
     const { scene, renderer } = initPlanet3D(canvasRef.current);
-    const cleanupBtn = BtnAnimation(btnRef.current);
+    const cleanup = BtnAnimation(btnRef.current, txtRef.current);
 
     return () => {
       const gl = renderer.getContext();
       gl.getExtension("WEBGL_lose_context")?.loseContext();
       renderer.dispose();
 
-      cleanupBtn?.();
+      cleanup?.();
     };
   }, []);
 
@@ -36,7 +37,9 @@ export default function Page() {
           </p>
 
           <button ref={btnRef} className="cta_btn">
-            Get started.
+            <span ref={txtRef} className="btn_text">
+              Order Now
+            </span>
           </button>
         </div>
 
