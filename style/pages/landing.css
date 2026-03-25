@@ -49,10 +49,22 @@
   }
 }
 
-.svg{
+#svg {
   position: absolute;
   top: -50%;
   left: -50%;
   width: 100%;
   height: 100%;
+  pointer-events: none; /* slik at den ikke blokkerer klikk på knappen */
+  z-index: 1; /* juster etter behov */
+}
+
+.cta_btn {
+  position: relative; /* viktig for x/y transforms */
+  overflow: hidden; /* ser penere ut når teksten forsvinner */
+}
+
+.btn_text {
+  display: inline-block;
+  /* transformOrigin blir håndtert automatisk av GSAP når du bruker alignOrigin */
 }

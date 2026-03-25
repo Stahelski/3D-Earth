@@ -1,67 +1,76 @@
-import { transcode } from "buffer";
+// buttonAnimation.ts
 import gsap from "gsap";
 import MotionPathPlugin from "gsap/MotionPathPlugin";
 
-export default function BtnAnimasjon(btn, txt) {
+gsap.registerPlugin(MotionPathPlugin);
+
+export default function btnAnimation(btn, txt) {
   if (!btn || !txt) return;
 
-  let tl = gsap.timeline({ delay: 2.85, yoy: true });
-  gsap.registerPlugin(MotionPathPlugin);
-  const handleClick = () => {
-    gsap.killTweensOf([btn, txt]);
+  const pathElement = document.getElementById("sti");
+  if (!pathElement) {
+    console.warn("SVG path med id='sti' ble ikke funnet");
+  }
 
-    // Start
-    gsap.to(btn, {
-      rotation: 720,
-      width: "40px",
-      height: "48px",
-      borderRadius: "100%",
-      duration: 2,
-      ease: "power2.inOut",
-    });
-    gsap.to(txt, {
-      color: "transparent",
-      duration: 0.5,
-    });
+  // Lag en timeline for click-animasjonen (paused, start ved klikk)
+  const tl = gsap.timeline({ paused: true });
+  const svg = document.getElementById("#svg");
+  const path = document.getElementById("#sti");
 
-    tl.to(btn, {
-      duration: 1,
-      ease: "elastic.out",
+  tl.to(btn, {
+    rotation: 720,
+    width: "40px",
+    height: "48px",
+    borderRadius: "100%",
+    duration: 1.8,
+    ease: "power2.inOut",
+  })
+    .to(
+      txt,
+      {
+        color: "transparent",
+        duration: 0.4,
+      },
+      0,
+    )
+    .to(btn, {
       x: -40,
       y: 5,
+      duration: 1,
+      ease: "elastic.out(1, 0.5)",
     });
 
-    tl.to(btn, {
-      duration: 3,
-      ease: "",
-      motionPath: {
-       
-      },
+  tl.set(svg, { opacity: 0 });
+  tl.from(path, { drawSVG: "0% 0%" });
+  tl.to(path, { drawSVG: "100% 100%" });
+
+  const resetAnimation = () => {
+    gsap.to(btn, {
+      rotation: 0,
+      width: "180px",
+      height: "40px",
+      borderRadius: "11px",
+      fontSize: "1.35rem",
+      duration: 1.4,
+      ease: "power2.inOut",
     });
 
-    // Back
-    //! Fiks detaljer
-    gsap.delayedCall(5, () => {
-      gsap.to(btn, {
-        rotation: 0,
-        fontSize: "1.35rem",
-        borderRadius: "11px",
-        width: "180px",
-        height: "40px",
-        duration: 1.5,
-        ease: "power2.inOut",
-      });
-      gsap.to(txt, {
-        color: "white",
-        duration: 1.5,
-      });
+    gsap.to(txt, {
+      color: "white",
+      duration: 1.4,
     });
+  };
+
+  const handleClick = () => {
+    tl.restart();
+
+    // Tilbakestill etter ferdig animasjon (1.8 + 1 + litt buffer)
+    gsap.delayedCall(10, resetAnimation);
   };
 
   btn.addEventListener("click", handleClick);
 
   return () => {
-    // cleanup (viktig!)
     btn.removeEventListener("click", handleClick);
   };
 }

@@ -13,12 +13,17 @@ export default function Page() {
     if (!canvasRef.current || !btnRef.current || !txtRef.current) return;
 
     // Send canvasRef.current som argument til init-funksjonen din
-    const { scene, renderer } = initPlanet3D(canvasRef.current);
+    const { renderer } = initPlanet3D(canvasRef.current);
     const cleanup = BtnAnimation(btnRef.current, txtRef.current);
 
     return () => {
-      const gl = renderer.getContext();
-      gl.getExtension("WEBGL_lose_context")?.loseContext();
+      try {
+        const gl = renderer.getContext();
+        gl?.getExtension("WEBGL_lose_context")?.loseContext();
+      } catch (e) {
+        console.warn("WEBGL_lose_context feilet", e);
+      }
+
       renderer.dispose();
 
       cleanup?.();
@@ -35,7 +40,8 @@ export default function Page() {
             AI agents that actually bring value to businesses and elevate
             workers productivity.
           </p>
-          <svg className="svg">
+
+          <svg id="svg">
             <path
               id="sti"
               d="M0,0 C0.385,0.147 0.532,0.246 0.682,0.392 0.783,0.49 0.907,0.69 1,1"
