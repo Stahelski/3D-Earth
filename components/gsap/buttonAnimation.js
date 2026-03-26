@@ -4,6 +4,8 @@ import MotionPathPlugin from "gsap/MotionPathPlugin";
 
 gsap.registerPlugin(MotionPathPlugin);
 
+//! https://beziercurve.net/?utm_source=chatgpt.com
+
 const emitterSize = 100;
 const dotQuantity = 25;
 const dotSizeMax = 20;
