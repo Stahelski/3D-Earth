@@ -1,10 +1,15 @@
+// page.tsx
+
 "use client";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import initPlanet3D from "../components/planet";
 import BtnAnimation from "../components/gsap/buttonAnimation";
+import Image from "next/image";
+import cart from "../public/earth/cart.png";
 
 export default function Page() {
   // Oppretter en referanse til canvas-elementet
+  const [count, updateCount] = useState<number>(0);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const btnRef = useRef(null);
   const txtRef = useRef(null);
@@ -32,6 +37,12 @@ export default function Page() {
 
   return (
     <div className="page">
+      <nav className="img">
+        <p className="counter">{count}</p>
+        <a href="#">
+          <Image src={cart} alt="cart" loading="eager" width={40} height={40} />
+        </a>
+      </nav>
       <section className="hero_main">
         <div className="content">
           <h1>Welcome To The New World</h1>
@@ -41,15 +52,15 @@ export default function Page() {
             workers productivity.
           </p>
 
-          <svg id="svg">
-            <path
-              id="sti"
-              d="M0,0 C0.385,0.147 0.532,0.246 0.682,0.392 0.783,0.49 0.907,0.69 1,1"
-              fill="none"
-              stroke="none"
-            />
-          </svg>
-          <button ref={btnRef} className="cta_btn">
+          <button
+            onClick={() => {
+              setTimeout(() => {
+                updateCount(count + 1);
+              }, 1000);
+            }}
+            ref={btnRef}
+            className="cta_btn"
+          >
             <span ref={txtRef} className="btn_text">
               Order Now
             </span>

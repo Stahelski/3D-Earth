@@ -17,6 +17,7 @@
   background-color: var(--background);
 }
 
+
 .main {
   display: flex;
   min-height: 100vh;
@@ -45,7 +46,6 @@
   letter-spacing: -2.4px;
   text-wrap: balance;
   color: var(--text-primary);
- 
 }
 
 .intro p {
