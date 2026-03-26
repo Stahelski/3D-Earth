@@ -66,13 +66,13 @@
 
 .dot {
   position: absolute;
-  background: red;
+  background: rgb(0, 0, 0);
   border-radius: 50%;
 }
 
 .cta_btn {
   position: relative; /* viktig for x/y transforms */
-  overflow: hidden; /* ser penere ut når teksten forsvinner */
+  overflow: "visible";
 }
 
 .btn_text {

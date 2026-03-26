@@ -15,7 +15,7 @@ export default function btnAnimation(btn, txt) {
   if (!btn || !txt) return;
 
   function explosion(btn) {
-    const tl = gsap.timeline();
+    const tl = gsap.timeline({ paused: true, delay: 5.4 });
 
     for (let i = 0; i < dotQuantity; i++) {
       const dot = document.createElement("div");
@@ -28,8 +28,9 @@ export default function btnAnimation(btn, txt) {
         height: size,
         xPercent: -50,
         yPercent: -50,
-        background: "red",
+        background: "#0e0e0c",
         borderRadius: "50%",
+        overflow: "visible",
         position: "absolute",
         left: "50%",
         top: "50%",
@@ -73,7 +74,7 @@ export default function btnAnimation(btn, txt) {
     txt,
     {
       color: "transparent",
-      duration: 0.4,
+      duration: 0.2,
     },
     0,
   );
@@ -86,7 +87,7 @@ export default function btnAnimation(btn, txt) {
   });
 
   tl.to(btn, {
-    duration: 4,
+    duration: 3.5,
     motionPath: {
       path: [
         { x: 10, y: -10 },
@@ -138,7 +139,7 @@ export default function btnAnimation(btn, txt) {
   const handleClick = () => {
     tl.restart();
     const dotsTimeline = explosion(btn); // Lag timeline for dot-animasjonen
-    dotsTimeline.play(0); // Spill den
+    dotsTimeline.play(); // Spill den
   };
 
   btn.addEventListener("click", handleClick);
