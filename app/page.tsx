@@ -64,7 +64,7 @@ export default function Page() {
             onClick={() => {
               setTimeout(() => {
                 updateCount(count + 1);
-              }, 1000);
+              }, 2370);
             }}
             ref={btnRef}
             className="cta_btn"

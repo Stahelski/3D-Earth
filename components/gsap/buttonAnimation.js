@@ -27,19 +27,26 @@ export default function btnAnimation(btn, txt) {
   );
 
   tl.to(btn, {
-    duration: 3.5,
+    x: -45,
+    y: 15,
+    duration: 0.4,
+    ease: "elastic.in",
+  });
+
+  tl.to(btn, {
+    duration: 0.25,
     motionPath: {
       path: [
-        { x: 0, y: 0 },
-        { x: 20, y: 0 },
-        { x: 430, y: 250 },
-        { x: 950, y: -550 },
+        { x: 90, y: -90 },
+        { x: 260, y: -225 },
+        { x: 500, y: -420 },
+        { x: 925, y: -550 },
       ],
       type: "cubic",
-      curviness: 1.5,
+      curviness: 2,
       autoRotate: false,
     },
-    ease: "power2.out",
+    ease: "expoScale",
   });
 
   // Dots animation (samme som før)
@@ -49,7 +56,7 @@ export default function btnAnimation(btn, txt) {
   const dotSizeMax = 20;
 
   function explosion(btn) {
-    const tlDots = gsap.timeline({ paused: true });
+    const tlDots = gsap.timeline({ paused: true, delay: 2.37 });
 
     for (let i = 0; i < dotQuantity; i++) {
       const dot = document.createElement("div");
