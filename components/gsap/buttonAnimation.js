@@ -85,7 +85,7 @@ export default function btnAnimation(btn, txt) {
           x: Math.cos(angle) * distance,
           y: Math.sin(angle) * distance,
           opacity: 0,
-          duration: 1 + Math.random(),
+          duration: 0.8 + Math.random(),
           ease: "power2.out",
         },
         0,
@@ -99,8 +99,22 @@ export default function btnAnimation(btn, txt) {
     return tlDots;
   }
 
+  tl.to(btn, {
+    x: 0,
+    y: 0,
+    delay: 1.5,
+    duration: 0.0,
+    ease: "circ",
+  });
+
   const handleClick = () => {
     tl.restart();
+    gsap.to(btn, {
+      opacity: 0,
+      duration: 0,
+
+      delay: 2.5,
+    });
     const dotsTimeline = explosion(btn);
     dotsTimeline.play();
   };
