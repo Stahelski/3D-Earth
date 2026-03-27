@@ -37,19 +37,27 @@ export default function Page() {
 
   return (
     <div className="page">
-      <nav className="img">
-        <p className="counter">{count}</p>
-        <a href="#">
-          <Image src={cart} alt="cart" loading="eager" width={40} height={40} />
-        </a>
-      </nav>
       <section className="hero_main">
+        <nav className="img">
+          <p className="counter">{count}</p>
+          <a href="#">
+            <Image
+              src={cart}
+              alt="cart"
+              loading="eager"
+              width={40}
+              height={40}
+            />
+          </a>
+        </nav>
         <div className="content">
-          <h1>Welcome To The New World</h1>
+          <h1>
+            Your Journey <br /> Begins Here
+          </h1>
 
           <p>
-            AI agents that actually bring value to businesses and elevate
-            workers productivity.
+            Personalized travel planning powered by insight and experience.
+            Explore more, stress less, and travel better.
           </p>
 
           <button
@@ -62,7 +70,7 @@ export default function Page() {
             className="cta_btn"
           >
             <span ref={txtRef} className="btn_text">
-              Order Now
+              Get a Consultation
             </span>
           </button>
         </div>
